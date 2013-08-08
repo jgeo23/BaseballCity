@@ -1,12 +1,10 @@
-$(function() {
-
-
-	
 
 
 
 MLBView = Backbone.View.extend({
-
+	
+	el: '#weatherOutput',
+	
 	events: {
 	    'change #bballCitySelector':   'getWeather',
 	    	
@@ -14,37 +12,27 @@ MLBView = Backbone.View.extend({
 
 	getWeather: function() {
 
-	var myurl = 'http://query.yahooapis.com/v1/public/yql?q=select%20item.condition%20from%20weather.forecast%20where%20location=' + document.getElementById('bballCitySelector').value + '&format=json'
-	//var myurl = "http://query.yahooapis.com/v1/public/yql?q=select%20item.condition%20from%20weather.forecast%20where%20location=02201&format=json"
-	//var myurl = "http://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast where location=02201&format=json"
+	var myurl = 'http://query.yahooapis.com/v1/public/yql?q=select%20item%20from%20weather.forecast%20where%20location=' + document.getElementById('bballCitySelector').value + '&format=json'
 
-	var obj1;
+		$.ajax({url:myurl,success:function(result){
 
-//alert(window.abc)
+			$('#mytemp').text(result.query.results.channel.item.condition.temp);
+			$('#mytext').text(result.query.results.channel.item.condition.text);
+			$('#mylat').text(result.query.results.channel.item.lat);
+			$('#mylong').text(result.query.results.channel.item.long);
+			
+		}});
 
-//$(abc).load(myurl);
 
-//$.ajax({url:myurl,success:function(result){alert(result.query.results.channel.item.condition.temp);}});
-$.ajax({url:myurl,success:function(result){
-
-//var obj1 = $.parseJSON(result);
-var obj1 = result;
-document.getElementById('mydiv2').innerHTML=obj1.query.results.channel.item.condition.text;
-document.getElementById('mydiv1').innerHTML=obj1.query.results.channel.item.condition.temp;
-//$("#mydiv2").innerHTML=obj1.query.results.channel.item.condition.text;
-
-}});
-
-//alert(window.abc.query.results.channel.item.condition.temp)
-	
-	//	document.getElementById('mydiv2').innerHTML=myurl;
 	
     },
 
 
 });
 
-var myview = new MLBView({el: 'body'});
+$(function() {
+
+new MLBView({el: 'body'});
 
 });
 
